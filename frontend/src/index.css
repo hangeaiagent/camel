@@ -1,0 +1,201 @@
+/* 全局样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+.app-layout {
+  background-color: #ffffff;
+}
+
+/* 对话界面样式 */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px);
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.message {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.user .message-content {
+  background: #1677ff;
+  color: white;
+  border-radius: 18px 18px 4px 18px;
+}
+
+.message.assistant .message-content {
+  background: white;
+  color: #333;
+  border-radius: 18px 18px 18px 4px;
+  border: 1px solid #e8e8e8;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 12px 16px;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.message-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.input-container {
+  padding: 20px;
+  border-top: 1px solid #e8e8e8;
+  background: white;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+.input-container input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.1);
+}
+
+.input-container button {
+  padding: 12px 24px;
+  background: #1677ff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.input-container button:hover:not(:disabled) {
+  background: #0958d9;
+}
+
+.input-container button:disabled {
+  background: #d9d9d9;
+  cursor: not-allowed;
+}
+
+/* 登录页面样式 */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .chat-container {
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .message-content {
+    max-width: 85%;
+  }
+  
+  .input-container {
+    padding: 16px;
+  }
+  
+  .login-form {
+    margin: 20px;
+    padding: 30px 20px;
+  }
+}
+
+/* 打字指示器 */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 18px;
+  border: 1px solid #e8e8e8;
+  max-width: fit-content;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: #999;
+  border-radius: 50%;
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
