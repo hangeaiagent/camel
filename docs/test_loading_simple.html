@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>等待对话框测试 - 简化版本</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .store-link {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        .store-link:hover {
+            background: #0056b3;
+        }
+        .area {
+            cursor: pointer;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        input[type="hidden"] {
+            display: none;
+        }
+        
+        /* 旋转动画 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>门店跳转等待对话框测试</h1>
+        <p class="description">点击下面的门店链接测试等待对话框功能（简化版本）</p>
+        
+        <!-- 模拟隐藏字段 -->
+        <input type="hidden" id="appid" value="test-app-id">
+        <input type="hidden" id="userid" value="test-user-id">
+        <input type="hidden" id="channeltype" value="1">
+        
+        <!-- 测试链接 -->
+        <div style="text-align: center;">
+            <a href="javascript:void(0)" 
+               onclick="retudpersonal('store001','activity001','共享家园店','测试活动','金凤西夏区','area001')" 
+               class="store-link area" 
+               id="store001">共享家园店</a>
+               
+            <a href="javascript:void(0)" 
+               onclick="retudpersonal('store002','activity001','良田店','测试活动','金凤西夏区','area001')" 
+               class="store-link area" 
+               id="store002">良田店</a>
+               
+            <a href="javascript:void(0)" 
+               onclick="retudpersonal('store003','activity001','大阅城店','测试活动','金凤西夏区','area001')" 
+               class="store-link area" 
+               id="store003">大阅城店</a>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+            <h3>功能说明:</h3>
+            <ul>
+                <li>✅ 点击门店链接会显示加载动画</li>
+                <li>✅ 防止重复点击（点击后其他链接会变灰）</li>
+                <li>✅ 800毫秒延迟让用户看到提示</li>
+                <li>✅ 包含错误处理机制</li>
+                <li>✅ 个性化店名显示</li>
+                <li>🎯 <strong>简化版本，兼容性最佳</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 简单的加载提示函数
+        function showSimpleLoading(message) {
+            // 移除已存在的提示
+            var existingLoading = document.getElementById('simpleLoading');
+            if (existingLoading) {
+                document.body.removeChild(existingLoading);
+            }
+            
+            // 创建新的提示
+            var loadingDiv = document.createElement('div');
+            loadingDiv.id = 'simpleLoading';
+            loadingDiv.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px 30px; border-radius: 8px; z-index: 9999; font-size: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); text-align: center; min-width: 200px;';
+            
+            // 添加旋转动画和文本
+            loadingDiv.innerHTML = 
+                '<div style="margin-bottom: 10px;"><div style="border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto;"></div></div>' +
+                '<div>' + message + '</div>';
+            
+            document.body.appendChild(loadingDiv);
+        }
+
+        //门店到个人的排行
+        function retudpersonal(usercategory2idappoint,activityId,usercategory2nameappoint,activityName,usercategory1nameappoint,usercategory1idappoint){
+            // 防止重复点击
+            if (window.isNavigating) {
+                return false;
+            }
+            window.isNavigating = true;
+            
+            // 禁用所有门店链接，防止重复点击
+            var areaLinks = document.getElementsByClassName('area');
+            for (var i = 0; i < areaLinks.length; i++) {
+                areaLinks[i].style.pointerEvents = 'none';
+                areaLinks[i].style.opacity = '0.6';
+            }
+            
+            // 显示跳转提示
+            showSimpleLoading('正在跳转到 ' + usercategory2nameappoint + '...');
+            
+            // 延迟跳转，让用户看到提示
+            setTimeout(function() {
+                try {
+                    var appid = document.getElementById('appid').value; 
+                    var userid = document.getElementById('userid').value;
+                    var channeltype = document.getElementById('channeltype').value;
+                    
+                    var targetUrl = '../sms/personalRankListp?appid='+appid+'&activityId='+activityId+'&userid='+userid+'&usercategory2idappoint='+usercategory2idappoint+'&usercategory1idappoint='+usercategory1idappoint+'&usercategory2nameappoint='+usercategory2nameappoint+'&usercategory1nameappoint='+usercategory1nameappoint+'&channeltype='+channeltype+'&activityName='+activityName;
+                    
+                    // 在测试环境中，我们不实际跳转，而是显示URL
+                    console.log('准备跳转到:', targetUrl);
+                    alert('测试模式：准备跳转到 ' + usercategory2nameappoint + '\n\n目标URL:\n' + targetUrl);
+                    
+                    // 恢复链接状态
+                    var loadingElement = document.getElementById('simpleLoading');
+                    if (loadingElement) {
+                        document.body.removeChild(loadingElement);
+                    }
+                    
+                    for (var i = 0; i < areaLinks.length; i++) {
+                        areaLinks[i].style.pointerEvents = 'auto';
+                        areaLinks[i].style.opacity = '1';
+                    }
+                    window.isNavigating = false;
+                    
+                    // 在实际环境中取消注释下面这行
+                    // window.location.href = targetUrl;
+                } catch (error) {
+                    console.error('跳转失败:', error);
+                    var loadingElement = document.getElementById('simpleLoading');
+                    if (loadingElement) {
+                        document.body.removeChild(loadingElement);
+                    }
+                    
+                    var areaLinks = document.getElementsByClassName('area');
+                    for (var i = 0; i < areaLinks.length; i++) {
+                        areaLinks[i].style.pointerEvents = 'auto';
+                        areaLinks[i].style.opacity = '1';
+                    }
+                    window.isNavigating = false;
+                    alert('跳转失败，请重试');
+                }
+            }, 800); // 800毫秒延迟
+        }
+    </script>
+</body>
+</html>
